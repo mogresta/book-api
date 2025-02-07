@@ -1,0 +1,49 @@
+services:
+  books:
+    build:
+      context: .
+      dockerfile: images/Dockerfile
+      args:
+        USER_ID: ${USER_ID}
+        GROUP_ID: ${GROUP_ID}
+    volumes:
+      - ../:/var/www/html
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    networks:
+      - books-network
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "${NGINX_PORT}:80"
+    volumes:
+      - ../:/var/www/html
+      - ./configuration/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - books
+    networks:
+      - books-network
+    restart: unless-stopped
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    ports:
+      - "${MYSQL_PORT}:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - books-network
+    restart: unless-stopped
+
+networks:
+  books-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+  log_data:
