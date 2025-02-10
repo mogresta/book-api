@@ -6,7 +6,10 @@
 ## Setup
 
 1. Clone the repository
-2. Run `docker compose -f docker/docker-compose.yml up -d --build`
+2. Run: 
+```bash
+docker compose -f docker/docker-compose.yml up -d --build
+```
 3. Install dependencies:
 ```bash
 docker compose -f docker/docker-compose.yml exec books composer install
@@ -47,9 +50,14 @@ docker compose -f docker/docker-compose.yml exec books php bin/console doctrine:
 ```
 
 ## Running Tests
-
+1. Create test database:
 ```bash
-docker compose exec books php bin/phpunit
+docker compose -f docker/docker-compose.yml exec books php bin/console --env=test doctrine:database:create
+docker compose -f docker/docker-compose.yml exec books php bin/console --env=test doctrine:schema:create
+```
+2. Run tests:
+```bash
+docker compose -f docker/docker-compose.yml exec books php bin/phpunit
 ```
 
 ## Possible Improvements outside the scope of the task

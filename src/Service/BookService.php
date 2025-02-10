@@ -7,8 +7,10 @@ namespace App\Service;
 use App\Entity\Book;
 use App\Enum\Genre;
 use App\Repository\BookRepository;
+use App\Tests\Unit\Serializer\GenreDenormalizerTest;
 use Doctrine\ORM\EntityManagerInterface;
 
+/**  @see GenreDenormalizerTest */
 class BookService
 {
     public function __construct(

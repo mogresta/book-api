@@ -42,8 +42,8 @@ services:
 
 networks:
   books-network:
+    name: books_network
     driver: bridge
 
 volumes:
   mysql_data:
-  log_data:
